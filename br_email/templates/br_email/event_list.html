@@ -1,0 +1,86 @@
+{% extends 'br_email/base.html' %}
+{% block content %}
+{% load static %}
+
+<!--<h4 class="page-title" style="text-align:center; padding-bottom: 3px">-->
+   <!--<span> <b>Upcoming Events - {{user.username}}</b> ::after</span></h4>-->
+<!--<hr class="head">-->
+
+
+<!--<h4 class="page-title">-->
+    <!--<span> <b> Your Races</b></span></h4>-->
+
+
+   <div class="internal-header">
+
+		<div class="img-container has-background-image has-title">
+
+			<div class="internal-title hero-title">
+                <h3><b>Your Events</b></h3>
+            </div>
+		</div>
+
+    </div>
+<div class="container">
+    {% if races %}
+        {% for race in races %}
+          <article class="media events-section">
+          <div class="media-body">
+
+              <a class="article-title" href={{race.EventUrl}}><h5><b>{{ race.EventName }}</b></h5></a>
+             <div class="article-metadata">
+                <small>{{ race.EventCity}}, {{ race.EventState}}</small>
+             </div>
+             <div class="article-metadata">
+                <small>Event Date: {{ race.EventDate|date:"m-d-Y" }}</small>
+             </div>
+             <div class="article-metadata">
+                <small>Close Date: {{ race.RegCloseDate|date:"m-d-Y" }}</small>
+             </div>
+             <div class="article-metadata">
+                <small>Event Types: {{ race.EventTypes}}</small>
+             </div>
+          </div>
+        </article>
+        {% endfor %}
+    {% if is_paginated %}
+                {% if page_obj.has_previous %}
+                    <a class = "btn btn-outline-info mb-4" href="?page=1">First</a>
+                    <a class = "btn btn-outline-info mb-4" href="?page={{page_obj.previous_page_number}}">Previous</a>
+                {% endif %}
+            {% for num in page_obj.paginator.page_range %}
+                {% if page_obj.number == num %}
+                    <a class = "btn btn-info mb-4" href="?page={{ num }}">{{ num }}</a>
+                {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3'  %}
+                    <a class = "btn btn-outline-info mb-4" href="?page={{ num }}">{{ num }}</a>
+                {% endif %}
+            {% endfor %}
+
+                {% if page_obj.has_next %}
+                        <a class = "btn btn-outline-info mb-4" href="?page={{ page_object.next_page_number}}">Next</a>
+                        <a class = "btn btn-outline-info mb-4" href="?page={{page_obj.paginator.num_pages}}">Last</a>
+                {% endif %}
+
+
+
+
+    {% endif %}
+    {% else %}
+        </div>
+           <div  class = "container">
+            <div> <h4 class = "form-title"><b>No races. Never a bad idea to work on your corner game.</b></h4>
+                <div class="border-top pt-3" style="text-align:left">
+                       <!--<div class="col-md-4" style="padding-left: 0px;  padding-right: 0px;">-->
+                        <img class="image-fluid" src="{% static 'br_email/corner2.jpg' %}">
+
+                </div>
+            </div>
+        </div>
+
+    {% endif %}
+</div>
+
+
+
+
+{% endblock content %}

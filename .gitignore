@@ -1,0 +1,7 @@
+*.vscode
+*.json
+*.sqlite3
+manage.py 
+static/
+venv/
+

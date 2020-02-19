@@ -1,0 +1,135 @@
+    {% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="{% static 'br_email/main.css' %}" >
+
+    {% if title %}
+        <title>Race Reminders - {{ title }}</title>
+    {% else %}
+        <title>Race Reminders</title>
+    {% endif %}
+
+</head>
+<body>
+
+
+<nav class="navbar navbar-expand-lg navbar-dark sticky-top" >
+  <a class="navbar-brand" href="/"> <img src="{% static "br_email/logo.png" %}" id = "logo"></a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNav">
+    <ul class="navbar-nav">
+      <li class="nav-item">
+        <a class="nav-link" href="/"><b>Home</b><span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/events/"><b>Events</b></a>
+      </li>
+
+        <li class="nav-item">
+        <a class="nav-link" href="/contact/"><b>Contact</b></a>
+      </li>
+    </ul>
+      <ul class="navbar-nav ml-auto">
+          {% if user.is_authenticated %}
+              <a class="nav-item nav-link" href="/profile/"> <b>Profile</b></a>
+              <a class="nav-item nav-link" href="/logout/"> <b>Logout</b></a>
+          {% else %}
+              <a class="nav-item nav-link" href="/login/"> <b>Login</b></a>
+              <a class="nav-item nav-link" href="/register/"> <b>Register</b></a>
+            {% endif %}
+      </ul>
+  </div>
+</nav>
+
+
+   <main role="main" >
+<div class="message-container">
+        {% if messages %}
+            {% for message in messages %}
+                {%if 'error' in message.tags %}
+                     <div class="alert alert-warning" style = "padding:10px 30px">
+                        {{ message }}
+                     </div>
+                {% else %}
+                  <div class="alert alert-{{ message.tags }}" style = "padding:10px 30px">
+                    {{ message }}
+                  </div>
+                     {% endif %}
+            {% endfor %}
+          {% endif %}
+</div>
+
+          {% block content %}{% endblock %}
+
+    </main>
+
+
+
+        <div class="footer fixed-bottom pt-3">
+          <div class="container-fluid pt-3  text-center">
+
+            <p class="text-center">
+                © 2020 •
+                <a href="/">
+                    <strong> RaceReminder</strong>
+                </a>
+                 •
+                <a href="/contact/" >
+                    <strong> Contact </strong>
+                </a>
+                •
+                 smhaley
+            </p>
+            </div>
+
+          </div>
+
+
+   <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+
+    <script type="text/javascript">// <![CDATA[
+            function loading(){
+                $("#loading").show();
+                $("#content").hide();
+          }
+    // ]]>
+    </script>
+
+<script>
+    $(document).ready(function(){
+        if ($(document).height() > $(window).height()) {
+            $('#footer').css('position', 'relative');
+        }
+});
+</script>
+
+<script>
+    $(function(){
+        $('a').each(function(){
+            if ($(this).prop('href') == window.location.href) {
+                $(this).addClass('active'); $(this).parents('li').addClass('active');
+            }
+        });
+    });
+</script>
+
+
+
+</body>
+</html>
+

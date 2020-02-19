@@ -1,0 +1,33 @@
+{% extends 'br_email/base.html' %}
+{% block content %}
+{% load static %}
+
+   <div class="internal-header">
+
+		<div class="img-container has-background-image has-title">
+
+			<div class="internal-title hero-title">
+                <h3><b>Page Not Found 404</b></h3>
+            </div>
+		</div>
+
+    </div>
+<div class="container">
+
+        </div>
+           <div  class = "container">
+            <div> <h4 class = "form-title"><b>Something went wrong! Please try again.</b></h4>
+                <div class="border-top pt-3" style="text-align:left">
+                       <!--<div class="col-md-4" style="padding-left: 0px;  padding-right: 0px;">-->
+                        <img class="image-fluid" src="{% static 'br_email/crash.jpg' %}">
+
+                </div>
+            </div>
+        </div>
+
+</div>
+
+
+
+
+{% endblock content %}

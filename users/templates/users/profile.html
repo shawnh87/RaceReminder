@@ -1,0 +1,88 @@
+{% extends 'br_email/base.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+
+<div class="internal-header">
+
+    <div class="img-container has-background-image has-title">
+
+        <div class="internal-title hero-form">
+            <h6><b>RaceReminder</b></h6>
+        </div>
+    </div>
+</div>
+
+<div  class = "container">
+   <div class = "content-section">
+    <form method="POST" enctype="multipart/form-data">
+    <!--<form method="POST">-->
+        {% csrf_token %}
+        <fieldset class="form-group">
+            <legend class="border-bottom mb-4">
+               <h4 class="form-title">
+                <span> <b> Race Distribution Settings - {{user.username}}</b></span></h4>
+            </legend>
+
+                <div class="form-row">
+                    <div class="form-group col-md-6 mb-0">
+                        {{u_form|crispy}}
+
+                    </div>
+                    <div class="form-check">
+                         <div class="col-md">
+                    {{p_form.distrib|as_crispy_field}}
+                         </div>
+                    </div>
+
+                </div>
+
+            <hr>
+            <span><h6 class="form-detail heading"><b>When are you looking to get notified?</b></h6></span>
+                <div class="form-row">
+
+                      <div class="form-group col-md-6 mb-0">
+                        {{ p_form.dstr_cad|as_crispy_field }}
+                      </div>
+                      <div class="form-group col-md-6 mb-0">
+                        {{ p_form.dstr_day|as_crispy_field }}
+                      </div>
+                </div>
+            <hr>
+            <span><h6 class="form-detail heading"><b>Where are you looking to race? (Use at least one option)</b></h6></span>
+                <div class="form-row">
+                      <div class="form-group col-md-6 mb-0">
+                        {{ p_form.distance|as_crispy_field }}
+                      </div>
+                      <div class="form-group col-md-6 mb-0">
+                        {{ p_form.zip|as_crispy_field }}
+                      </div>
+                </div>
+                <div class="form-row">
+                      <div class="form-group col-md-6 mb-0">
+                        {{ p_form.region|as_crispy_field }}
+                      </div>
+                      <div class="form-group col-md-6 mb-0">
+                        {{ p_form.states|as_crispy_field }}
+                      </div>
+                </div>
+            <hr>
+            <span><h6 class="form-detail heading"><b>What are you looking to race?</b></h6></span>
+                <div class="form-row">
+                <div class="form-row">
+                      <div class="form-check .form-check-inline">
+                        {{ p_form.event|as_crispy_field}}
+
+                      </div>
+                  </div>
+
+        </fieldset>
+        <div class="form-group pl-2">
+            <button class="btn btn-outline-info" type="submit">Submit</button>
+        </div>
+    </form>
+    <div class="border-top pt-3">
+    </div>
+   </div>
+</div>
+
+{% endblock content %}

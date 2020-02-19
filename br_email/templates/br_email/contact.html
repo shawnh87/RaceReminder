@@ -1,0 +1,61 @@
+{% extends 'br_email/base.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+
+<div class="internal-header">
+
+    <div class="img-container has-background-image has-title">
+
+        <div class="internal-title hero-form">
+            <h6><b>RaceReminder</b></h6>
+        </div>
+    </div>
+</div>
+
+
+<div class = "container">
+    {% if ind %}
+
+            <div> <h4 class = "form-title"><b>Thanks for the feedback!</b></h4>
+                <div class="border-top pt-3">
+                    <h5 class="text-muted">
+                        We'll reach out as soon as we can.
+                    </h5>
+                </div>
+            </div>
+
+
+   {% else %}
+    <div class="content-section">
+        <form method="POST">
+            {% csrf_token %}
+            <fieldset class="form-group">
+                <legend class="border-bottom mb-4">
+                    <h4 class="form-title">
+                    <span> <b> Contact </b></span></h4>
+                </legend>
+                <div class="col-12 pb-5 heading">
+                <p><b>Comments, thoughts on improvements, or want to say 'hi'?</b></p>
+                <p><b>Let us know!</b></p>
+                </div>
+                <!--{{ form|crispy }}-->
+                  <div class="form-group col-md-5 md-3 mb-0">
+
+                        {{ form.sender|as_crispy_field }}
+                  </div>
+                  <div class="form-group col-md-9 mb-0">
+
+                    {{ form.message|as_crispy_field }}
+                  </div>
+            </fieldset>
+            <div class="form-group pl-3">
+                <button class="btn btn-outline-info" type="submit">Send</button>
+
+            </div>
+        </form>
+        <div class="border-top pt-3"></div>
+    </div>
+</div>
+
+{% endif %}
+{% endblock content %}
