@@ -1,6 +1,6 @@
 # racereminder_proj
 
-racereminder.site
+http://racereminder.site
 
 RaceRiminder is an email delivery (reminder) service for bike racers that relying on BikeReg.com. 
 
@@ -12,3 +12,4 @@ Daily there is a crontab that calls a custom management function looking for all
 
 This project is not a replacement for BikeReg, simply an enhancement. 
 
+Future enhancements: move static files to S3, add SSL protection, cut distribution over to stronger service (SES)
