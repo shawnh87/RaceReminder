@@ -4,4 +4,6 @@
 manage.py 
 static/
 venv/
+users/migrations
+br_email/migrations/
 
