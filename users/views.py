@@ -40,6 +40,7 @@ def profile(request):
             u_form.save()
 
             current_user = request.user
+            
             event_call = BikeRegCall(form=p_form, user= current_user)
             params = event_call.get_q_string_dat()
             event_call.build_q_string(params)
@@ -49,9 +50,7 @@ def profile(request):
 
             zip_cd = p_form.cleaned_data.get('zip')
             profile_update.location = get_location(zip_cd)
-            print(get_location(zip_cd))
-            profile_update.q_string = event_call.url
-            print(event_call.url)
+            profile_update.q_string = event_call.url 
             profile_update.run_date = run_date(dstr_day, dstr_cad)
             profile_update.save()
             p_form.save_m2m()
@@ -80,4 +79,3 @@ def profile(request):
         'p_form': p_form
     }
     return render(request, 'users/profile.html', context)
-

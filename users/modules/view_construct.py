@@ -10,6 +10,7 @@ from django.utils import timezone
 
 
 def get_location(zip_cd):
+    """Map zip to lat + long"""
     try:
         curr_zip = Zip.objects.get(zip=zip_cd)
         location = str(curr_zip.lat) + '|' + str(curr_zip.lng)
@@ -19,20 +20,33 @@ def get_location(zip_cd):
 
 
 def run_date(day, cad):
+    """calc nex run date"""
     today = datetime.today()
     return today + timedelta(days=(cad-(today.weekday() - day)))
 
 
+def get_dates(cadence):
+    """helper to build out start and end dates"""
+    delta = int(cadence) if cadence else 31
+    today = datetime.today()
+    start = today + timedelta(days=1)
+    end = today + timedelta(days=delta)
+    return [start.strftime('%Y-%m-%d'), end.strftime('%Y-%m-%d')]
+
+
 class BikeRegCall:
 
-    def __init__(self, user, form=None, url=None, events = None, email = None):
+    def __init__(self, user, form=None, url=None, events = None, email = None, cadence = 14):
         self.user = user
         self.form = form        
         self.url = url
         self.events = events
         self.email = email
+        self.cadence = cadence
 
     def get_q_string_dat(self):
+        """given a form, get q string data; returns params for q string
+        start date and end date appended on run in get_events method"""
 
         state_pk = [i for i in self.form.cleaned_data['states'] if i != '1']  # pk=1 is blank
         states = State.objects.filter(pk__in=state_pk).values()
@@ -50,24 +64,14 @@ class BikeRegCall:
         zip_cd = self.form.cleaned_data.get('zip')
         location_out = str(get_location(zip_cd))
 
-        cadence = self.form.cleaned_data.get('dstr_cad')
-
-        if cadence:
-            delta = int(cadence)
-        else:
-            delta = 31
-
-        today = datetime.today()
-        start = today + timedelta(days=1)
-        end = today + timedelta(days=delta)
-        startdate = start.strftime('%Y-%m-%d')
-        enddate = end.strftime('%Y-%m-%d')
+        self.cadence = int(self.form.cleaned_data.get('dstr_cad'))
 
         return {'states_out': states_out, 'regions_out': regions_out, 'events_out': events_out,
-                'location_out': location_out, 'distance_out': distance_out, 'startdate': startdate, 'enddate': enddate}
+                'location_out': location_out, 'distance_out': distance_out}
 
-    
+
     def build_q_string(self, params):
+        """"Builds out q string from params"""
 
         base = 'http://www.BikeReg.com/api/search?'
 
@@ -87,19 +91,23 @@ class BikeRegCall:
             location = None
 
         events = f"eventtype={params['events_out']}"
-        dates = f"startDate={params['startdate']}&endDate={params['enddate']}"
 
-        q_string = [events, dates, location, states, regions]
+        q_string = [events, location, states, regions]#, dates]
         q_string_out = '&'.join([i for i in q_string if i])
-
         self.url = base+q_string_out
 
 
     def get_events(self):
+        """Removes all present Events from user account.
+        Appends end and run dates to q string.
+        Makes call to breg api. Returns events for dist and populates db. 
+        On fail notification sent out."""
+
         Event.objects.filter(user=self.user).delete()
-        
+        dates = get_dates(self.cadence)
+        call_string = self.url + f"&startDate={dates[0]}&endDate={dates[1]}"
         try:
-            d = get(self.url, timeout=30, )
+            d = get(call_string, timeout=30)
             dat = loads(d.text)
             events = []
             for event in dat['MatchingEvents']:
@@ -122,7 +130,6 @@ class BikeRegCall:
 
                 event = Event(user=self.user, **race)
                 event.save()
-                # print(f"Loaded {race['EventName']}")
 
                 events.append({'name': race['EventName'], 'url': race['EventUrl'], 
                 'date': race['EventDate'].strftime('%m-%d-%Y'), 'city': race['EventCity'],
@@ -145,10 +152,11 @@ class BikeRegCall:
                     )
 
     def send_events(self):
+        """distribution method"""
 
         if self.events:
             head = "Hi,\n\nHere are the events from Bike Reg you requested!\n\n"
-            footer = "\n\nThanks,\nRaceReminder\n\n\n\nTo unsubribe, please visit: http://www.racereminder.site/profile/"
+            footer = "\n\nThanks,\nRaceReminder\n\n\n\nTo unsubribe, please visit: http://localhost:8000/profile/"
 
             send_mail(
                 'RaceReminder: Your Events',
@@ -160,3 +168,4 @@ class BikeRegCall:
 
 
 
+            

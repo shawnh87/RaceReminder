@@ -132,9 +132,8 @@ class ProfileForm(forms.ModelForm):
         state_pk = [i for i in cleaned_data.get('states')]
         region_pk = [i for i in cleaned_data.get('region')]
         distance = cleaned_data.get("distance")
-	#below region and state are null vals--did not want to reset pk indexing at this time
-        if (not distance or not zip) and (not region_pk or region_pk == ['10']) and (not state_pk or state_pk == ['157']):
+
+        if (not distance or not zip) and (not region_pk or region_pk == ['1']) and (not state_pk or state_pk == ['1']):
             raise forms.ValidationError(
                     "Please use either distance from zip or state or region options."
                 )
-

@@ -15,11 +15,10 @@ def home(request):
 class EventListView(ListView):
 
     context_object_name = 'races'
-    ordering = ['EventDate']
     paginate_by = 10
 
     def get_queryset(self):
-        return Event.objects.filter(user=self.request.user)
+        return Event.objects.filter(user=self.request.user).order_by('EventDate')
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
@@ -59,4 +58,3 @@ def handler404(request, exception=None):
 
 def handler500(request, exception=None):
     return render(request, 'br_email/500.html', status=500)
-

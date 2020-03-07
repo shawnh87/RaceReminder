@@ -42,9 +42,7 @@ class Profile(models.Model):
     dstr_day = models.CharField(max_length=100, blank=True)
     distrib = models.BooleanField(null=False, default=True)
     q_string = models.CharField(max_length=1000, null=True)
-    run_date = models.DateField(blank=True)
     run_date = models.DateField(blank=True, default=datetime(2050, 1, 1, 1, 00))
 
     def __str__(self):
         return f"{self.user.username} Profile"
-

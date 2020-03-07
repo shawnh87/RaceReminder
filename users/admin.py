@@ -11,4 +11,3 @@ admin.site.register(State)
 admin.site.register(Region)
 admin.site.register(EventType)
 admin.site.register(Profile)
-
