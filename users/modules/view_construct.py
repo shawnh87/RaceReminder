@@ -156,7 +156,7 @@ class BikeRegCall:
 
         if self.events:
             head = "Hi,\n\nHere are the events from Bike Reg you requested!\n\n"
-            footer = "\n\nThanks,\nRaceReminder\n\n\n\nTo unsubribe, please visit: http://localhost:8000/profile/"
+            footer = "\n\nThanks,\nRaceReminder\n\n\n\nTo unsubribe, please visit: http://racereminder.site/profile/"
 
             send_mail(
                 'RaceReminder: Your Events',
