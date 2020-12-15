@@ -1,4 +1,4 @@
-# racereminder_proj
+# RaceReminder
 
 RaceRiminder is an email delivery (reminder) service for bike racers relying on BikeReg.com.
 
